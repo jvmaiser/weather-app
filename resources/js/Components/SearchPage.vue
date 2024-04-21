@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import axios from 'axios';
 
 const emit = defineEmits(['place-data']);
 
@@ -9,36 +10,36 @@ const searchTerm = ref({
   results: null,
 });
 
-const API = `fsq3IdBSShFekw5FiD62DV8Z4q/eCHdyxU1Ms6hPS+H/RUY=`;
-
-const options = {
+const optionsWeather = {
   method: 'GET',
   headers: {
     accept: 'application/json',
-    Authorization: 'fsq3vpdrnjzIEtE/cZOSj9QyQUyRvuWPKpvxbovxizlwPVM='
+    Authorization: 'b628f25fe614f80f69e7f9924f7e0fef',
+    'access-control-allow-origin': '*'
   }
 };
 
 const handleSearch = () => {
-  clearTimeout(searchTerm.value.timeout)
-  searchTerm.value.timeout = setTimeout(async () => {
-    if (searchTerm.value.query !== '') {
-      const res = await fetch(
-        `https://api.foursquare.com/v3/autocomplete?query=${searchTerm.value.query}&ll=36.2048,138.2529`, options
-      )
+  try {
+    clearTimeout(searchTerm.value.timeout);
 
-      const data = await res.json()
-      console.log(data);
-      searchTerm.value.results = data.results
-    } else {
-      searchTerm.value.results = null
-    }
-  }, 500)
+    searchTerm.value.timeout = setTimeout(async () => {
+      if (searchTerm.value.query !== '') {
+        const res = await axios.get('/cities', { params: {query: searchTerm.value.query} });
+        searchTerm.value.results = await res.data;
+      } else {
+        searchTerm.value.results = null;
+      }
+    }, 500);
+  } catch (error) {
+    alert('Error fetching cities:', error.message);
+  }
 }
 
-const getWeather = async (id) => {
+const getWeather = async (place) => {
+  let coordinates = place.geo.center;
   const res = await fetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=[YOUR_API_KEY]=id:${id}&days=3&aqi=no&alerts=no`
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.latitude}&lon=${coordinates.longitude}&cnt=5`, optionsWeather
   )
 
   const data = await res.json()
@@ -70,10 +71,10 @@ const getWeather = async (id) => {
       <div v-if="searchTerm.results !== null">
         <div v-for="place in searchTerm.results" :key="place.id">
           <button
-            @click="getWeather(place.id)"
+            @click="getWeather(place)"
             class="px-3 my-2 hover:text-amber-600 hover:font-bold w-full text-left"
           >
-            {{ place.text.primary }}
+            {{ place.city }}
           </button>
         </div>
       </div>
