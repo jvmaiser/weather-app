@@ -20,7 +20,7 @@
         @vite('resources/css/app.css')
     </head>
     <body>
-        <div id="app" class="min-h-screen bg-zinc-100 p-8">
+        <div id="app" class="min-h-screen bg-zinc-200 p-8">
             <main-layout>
             </main-layout>
         </div>

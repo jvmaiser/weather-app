@@ -19,45 +19,45 @@ defineProps({
       <!-- Wind speed -->
       <div class="text-center flex-1">
         <i class="fa-solid fa-wind mb text-2xl"></i>
-        <p class="text-xl font-bold">{{ place.current.wind_kph }} km/h</p>
+        <p class="text-xl font-bold">{{ place[0].wind.speed }} km/h</p>
         <p>wind</p>
       </div>
       <!-- Humidity level -->
       <div class="text-center flex-1">
         <i class="fa-solid fa-droplet mb text-2xl"></i>
-        <p class="text-xl font-bold">{{ place.current.humidity }}%</p>
+        <p class="text-xl font-bold">{{ place[0].main.humidity }}%</p>
         <p>humidity</p>
       </div>
       <!-- Precipitation -->
       <div class="text-center flex-1">
         <i class="fa-solid fa-umbrella mb text-2xl"></i>
-        <p class="text-xl font-bold">{{ place.current.precip_mm }} mm</p>
-        <p>precipitation</p>
+        <p class="text-xl font-bold">{{ place[0].main.pressure }} mm</p>
+        <p>pressure</p>
       </div>
     </div>
     <div class="flex items-center justify-between gap-6 mb-10">
       <!-- Wind direction -->
       <div class="text-center flex-1">
         <i class="fa-solid fa-fan mb text-2xl"></i>
-        <p class="text-xl font-bold">{{ place.current.wind_dir }}</p>
-        <p>direction</p>
+        <p class="text-xl font-bold">{{ place[0].wind.gust }}</p>
+        <p>Gust</p>
       </div>
       <!-- Feels like -->
       <div class="text-center flex-1">
         <i class="fa-solid fa-temperature-half mb text-2xl"></i>
-        <p class="text-xl font-bold">{{ Math.round(place.current.feelslike_c) }}</p>
+        <p class="text-xl font-bold">{{ Math.round(place[0].main.feels_like - 273.15) }}&deg;</p>
         <p>Feels</p>
       </div>
       <!-- UV -->
       <div class="text-center flex-1">
-        <i class="fa-solid fa-sun mb text-2xl"></i>
-        <p class="text-xl font-bold">{{ place.current.uv }}</p>
-        <p>UV index</p>
+        <i class="fa-solid fa-eye mb text-2xl"></i>
+        <p class="text-xl font-bold">{{ place[0].visibility }}</p>
+        <p>Visibility</p>
       </div>
     </div>
     <!-- Last update and delete -->
     <div class="flex justify-between items-center">
-      <h3 class="text-slate-900/50">last update: {{ place.current.last_updated }}</h3>
+<!--      <h3 class="text-slate-900/50">last update: {{ place.current.last_updated }}</h3>-->
       <button @click="$emit('remove-place')">
         <i class="fa-solid fa-trash"></i>
       </button>

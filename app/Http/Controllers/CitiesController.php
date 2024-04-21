@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchCitiesRequest;
 use App\Services\CitiesService;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 class CitiesController extends Controller
@@ -13,9 +13,9 @@ class CitiesController extends Controller
     ) {
     }
 
-    public function getCities(Request $request): JsonResponse
+    public function getCities(SearchCitiesRequest $request): JsonResponse
     {
-        $response = $this->citiesService->getCities($request->all());
+        $response = $this->citiesService->getCities($request->validated());
         return response()->json($response);
     }
 }

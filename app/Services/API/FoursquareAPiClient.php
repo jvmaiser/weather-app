@@ -5,7 +5,6 @@ namespace App\Services\API;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\RequestException;
-use Exception;
 
 class FoursquareAPiClient implements APIClientInterface
 {
@@ -25,7 +24,7 @@ class FoursquareAPiClient implements APIClientInterface
     public function get(string $url, array $params = []): array
     {
         $queryParams = [
-            'querys' => Arr::get($params, 'query'),
+            'query' => Arr::get($params, 'query'),
             'll'    => self::JAPAN_COORDINATE,
             'types' => self::PLACE_TYPE,
         ];
