@@ -23,7 +23,6 @@ A simple web application providing weather information for tourists visiting Jap
 - **Color-Coded Weather Cards**: Weather cards are color-coded based on the time of day, providing visual cues for day and night conditions. Dark backgrounds indicate nighttime, while light backgrounds signify daytime.
 - **Delete Weather Cards**: Users have the option to remove weather cards they no longer need, allowing for customization and decluttering of the interface.
 
-
 ## Installation
 
 1. Clone the repository to your local machine:
