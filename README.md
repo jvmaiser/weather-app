@@ -15,6 +15,14 @@ A simple web application providing weather information for tourists visiting Jap
 - Responsive design for seamless usage on different devices.
 - Can search multiple cities.
 
+## Why My UI/UX is the Best?
+
+- **Easy to Use**: The interface is designed with simplicity in mind, making it effortless for users to find and access weather information.
+- **Autocomplete of Cities**: I implemented an autocomplete feature for city search, enhancing user experience by quickly suggesting matching cities as they type.
+- **Multiple City Weather Search**: Users can search for and view weather information for multiple cities simultaneously, improving efficiency and convenience.
+- **Color-Coded Weather Cards**: Weather cards are color-coded based on the time of day, providing visual cues for day and night conditions. Dark backgrounds indicate nighttime, while light backgrounds signify daytime.
+- **Delete Weather Cards**: Users have the option to remove weather cards they no longer need, allowing for customization and decluttering of the interface.
+
 ## Installation
 
 1. Clone the repository to your local machine:
