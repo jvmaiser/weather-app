@@ -1,15 +1,36 @@
 <script setup>
-import { ref } from 'vue'
-import WeatherForecastDay from './WeatherForecastDay.vue'
-import WeatherInfo from './WeatherInfo.vue'
+import { ref } from 'vue';
+import WeatherForecastHour from './WeatherForecastHour.vue';
+import WeatherInfo from './WeatherInfo.vue';
 
 defineProps({
-  place: Object
+  place: {
+    type: Object,
+    default: () => ({}),
+  },
+  city: {
+    type: String,
+    default: '',
+  },
 })
 
-const emit = defineEmits(['delete-place'])
+const emit = defineEmits(['delete-place']);
 
-const showDetail = ref(false)
+const showDetail = ref(false);
+
+const formatDateTime = () => {
+  let date = new Date();
+  let japanTime = date.getTime() + (date.getTimezoneOffset() + (9 * 60)) * 60000;
+  let japanDate = new Date(japanTime);
+
+  let hours = japanDate.getHours();
+  let minutes = ('0' + japanDate.getMinutes()).slice(-2);
+  let ampm = hours >= 12 ? ' AM' : ' PM';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+
+  return hours + ':' + minutes + ampm;
+}
 
 const removePlace = (placeName) => {
   emit('delete-place', placeName)
@@ -19,37 +40,41 @@ const removePlace = (placeName) => {
 
 <template>
   <div
-    :class="place.current.is_day === 1 ? 'bg-day' : 'bg-night'"
+    :class="place[0].sys.pod === 'd' ? 'bg-day' : 'bg-night'"
     class="text-white p-10 rounded-lg shadow-lg gap-6 mb-6 relative overflow-hidden"
   >
     <div class="mb-2 flex justify-between items-center">
       <div class="flex items-center justify-center gap-2">
         <i class="fa-solid fa-location-dot"></i>
-        <h1 class="text-3xl">{{ place.location.name }}</h1>
+        <h1 class="text-3xl">{{ city }}</h1>
       </div>
       <div class="flex items-center justify-center gap-2">
         <i class="fa-solid fa-clock"></i>
         <h1 class="text-3xl">
-          {{ new Date(place.location.localtime).getHours() }}:{{
-            new Date(place.location.localtime).getMinutes()
-          }}
+          {{ formatDateTime() }}
         </h1>
       </div>
     </div>
 
     <!-- current weather -->
     <div class="text-center flex-1">
-      <img :src="place.current.condition.icon" alt="icon" width="200" class="mx-auto -mb-10" />
-      <h1 class="text-9xl mb-2 -mr-4">{{ Math.round(place.current.temp_c) }}&deg;</h1>
-      <p class="text-2xl">{{ place.current.condition.text }}</p>
+      <img
+        :src="'https://openweathermap.org/img/wn/' + place[0].weather[0].icon + '@2x.png'"
+        alt="icon"
+        width="200"
+        class="mx-auto -mb-10"
+      />
+      <h1 class="text-9xl mb-2 -mr-4">{{ Math.round(place[0].main.temp - 273.15) }}&deg;</h1>
+      <p class="text-2xl">{{ place[0].weather[0].main }}</p>
     </div>
 
     <div class="w-full h-px bg-gradient-to-r from-white/0 via-white/90 to-white/0 my-10">
     </div>
 
-    <!-- forecast -->
-    <div v-for="(day, idx) in place.forecast.forecastday" :key="idx">
-      <WeatherForecastDay :day="day" />
+    <div class="flex justify-between mt-12">
+      <div v-for="(weather, id) in place" :key="id" class="flex flex-col items-center">
+        <WeatherForecastHour :weather="weather" />
+      </div>
     </div>
 
     <!-- info -->
@@ -58,7 +83,7 @@ const removePlace = (placeName) => {
         <WeatherInfo
           :place="place"
           @close-info="showDetail = false"
-          @remove-place="removePlace(place.location.name)"
+          @remove-place="removePlace(city)"
         />
       </div>
     </Transition>
@@ -71,25 +96,3 @@ const removePlace = (placeName) => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.bg-day {
-  background-color: #8ec5fc;
-  background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
-}
-
-.bg-night {
-  background-color: #07223d;
-  background-image: linear-gradient(62deg, #0a2a4a 0%, #270845 100%);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

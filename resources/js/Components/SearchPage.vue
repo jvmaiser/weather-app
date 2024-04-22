@@ -10,23 +10,14 @@ const searchTerm = ref({
   results: null,
 });
 
-const optionsWeather = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: 'b628f25fe614f80f69e7f9924f7e0fef',
-    'access-control-allow-origin': '*'
-  }
-};
-
 const handleSearch = () => {
   try {
     clearTimeout(searchTerm.value.timeout);
 
     searchTerm.value.timeout = setTimeout(async () => {
       if (searchTerm.value.query !== '') {
-        const res = await axios.get('/cities', { params: {query: searchTerm.value.query} });
-        searchTerm.value.results = await res.data;
+        const cities = await axios.get('/api/cities', { params: { query: searchTerm.value.query } });
+        searchTerm.value.results = await cities.data;
       } else {
         searchTerm.value.results = null;
       }
@@ -37,15 +28,21 @@ const handleSearch = () => {
 }
 
 const getWeather = async (place) => {
-  let coordinates = place.geo.center;
-  const res = await fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.latitude}&lon=${coordinates.longitude}&cnt=5`, optionsWeather
-  )
+  let param = {
+    lat: place.latitude,
+    lon: place.longitude,
+    cnt: 8,
+  };
 
-  const data = await res.json()
+  const result = await axios.get('/api/weather', { params: param });
+  const weather = await result.data;
 
-  emit('place-data', data)
+  let emitParam = {
+    weather: weather,
+    city: place.city
+  }
 
+  emit('place-data', emitParam);
   searchTerm.value.query = ''
   searchTerm.value.results = null
 }
@@ -55,12 +52,12 @@ const getWeather = async (place) => {
   <div>
     <!-- search field -->
     <form>
-      <div class="bg-white border border-amber-600/30 rounded-lg shadow-lg flex items-center">
-        <i class="fa-solid fa-magnifying-glass p-2 text-amber-600"></i>
+      <div class="bg-white border border-gray-600/30 rounded-lg shadow-lg flex items-center">
+        <i class="fa-solid fa-magnifying-glass p-2 text-gray-600"></i>
         <input
           type="text"
           placeholder="Search for a place"
-          class="rounded-r-lg p-2 border-0 outline-0 focus:ring-2 focus:ring-amber-600 ring-inset w-full"
+          class="rounded-r-lg p-2 border-0 outline-0 focus:ring-2 focus:ring-gray-600 ring-inset w-full"
           v-model="searchTerm.query"
           @input="handleSearch"
         />
@@ -72,7 +69,7 @@ const getWeather = async (place) => {
         <div v-for="place in searchTerm.results" :key="place.id">
           <button
             @click="getWeather(place)"
-            class="px-3 my-2 hover:text-amber-600 hover:font-bold w-full text-left"
+            class="px-3 my-2 hover:text-gray-600 hover:font-bold w-full text-left"
           >
             {{ place.city }}
           </button>
