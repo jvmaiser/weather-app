@@ -39,12 +39,12 @@ const getWeather = async (place) => {
 
   let emitParam = {
     weather: weather,
-    city: place.city
+    city: place.city,
   }
 
   emit('place-data', emitParam);
-  searchTerm.value.query = ''
-  searchTerm.value.results = null
+  searchTerm.value.query = '';
+  searchTerm.value.results = null;
 }
 </script>
 

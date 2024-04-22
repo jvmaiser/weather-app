@@ -21,20 +21,13 @@ const showDetail = ref(false);
 const formatDateTime = () => {
   let date = new Date();
   let japanTime = date.getTime() + (date.getTimezoneOffset() + (9 * 60)) * 60000;
-  let japanDate = new Date(japanTime);
 
-  let hours = japanDate.getHours();
-  let minutes = ('0' + japanDate.getMinutes()).slice(-2);
-  let ampm = hours >= 12 ? ' AM' : ' PM';
-  hours = hours % 12;
-  hours = hours ? hours : 12;
-
-  return hours + ':' + minutes + ampm;
+  return new Date(japanTime).getHours() + ':' + new Date(japanTime).getMinutes();
 }
 
 const removePlace = (placeName) => {
-  emit('delete-place', placeName)
-  showDetail.value = false
+  emit('delete-place', placeName);
+  showDetail.value = false;
 }
 </script>
 

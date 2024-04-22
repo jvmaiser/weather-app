@@ -23,7 +23,7 @@ const formatDateHour = (dateString) => {
 }
 
 const convertKelvinToCelcius = (temperature) => {
-  return Math.round(temperature - 273.15)
+  return Math.round(temperature - 273.15);
 }
 </script>
 
