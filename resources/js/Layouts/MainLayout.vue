@@ -12,27 +12,29 @@ const date = new Date().toLocaleString('en-us', {
 
 const places = ref([]);
 
-const addPlace = (data) => {
-  places.value.push(data);
+const addPlace = (placeWeather) => {
+  places.value.unshift(placeWeather);
 }
 
 const deletePlace = (name) => {
-  if (confirm('Are you sure')) {
-    places.value = places.value.filter((place) => place.location.name !== name);
+  if (confirm('Are you sure you want to delete?')) {
+    places.value = places.value.filter((place) => place.city !== name);
   }
 }
 </script>
 
 <template>
   <main >
-    <div class="text-center mb-6">
+    <div class="text-center mb-6 text-2xl">
       {{ date }}
     </div>
 
-    <SearchPage @place-data="addPlace"/>
+    <SearchPage @place-data="addPlace" />
 
-    <template v-for="(place, id) in places" :key="id">
-      <WeatherCard :place="place" @delete-place="deletePlace" />
-    </template>
+    <div class="grid grid-cols-2 gap-4">
+      <div v-for="(place, id) in places" :key="id">
+        <WeatherCard :place="place.weather" :city="place.city" @delete-place="deletePlace" />
+      </div>
+    </div>
   </main>
 </template>
