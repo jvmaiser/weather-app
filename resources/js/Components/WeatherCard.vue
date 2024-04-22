@@ -23,15 +23,13 @@ const formatDateTime = () => {
   let japanTime = date.getTime() + (date.getTimezoneOffset() + (9 * 60)) * 60000;
   let japanDate = new Date(japanTime);
 
-  let month = japanDate.getMonth() + 1;
-  let day = japanDate.getDate();
   let hours = japanDate.getHours();
   let minutes = ('0' + japanDate.getMinutes()).slice(-2);
-  let ampm = hours >= 12 ? 'pm' : 'am';
+  let ampm = hours >= 12 ? ' AM' : ' PM';
   hours = hours % 12;
   hours = hours ? hours : 12;
 
-  return month + '/' + day + ' ' + hours + ':' + minutes + ampm;
+  return hours + ':' + minutes + ampm;
 }
 
 const removePlace = (placeName) => {
@@ -60,7 +58,12 @@ const removePlace = (placeName) => {
 
     <!-- current weather -->
     <div class="text-center flex-1">
-      <img :src="'https://openweathermap.org/img/wn/' + place[0].weather[0].icon + '@2x.png'" alt="icon" width="200" class="mx-auto -mb-10" />
+      <img
+        :src="'https://openweathermap.org/img/wn/' + place[0].weather[0].icon + '@2x.png'"
+        alt="icon"
+        width="200"
+        class="mx-auto -mb-10"
+      />
       <h1 class="text-9xl mb-2 -mr-4">{{ Math.round(place[0].main.temp - 273.15) }}&deg;</h1>
       <p class="text-2xl">{{ place[0].weather[0].main }}</p>
     </div>
@@ -73,11 +76,6 @@ const removePlace = (placeName) => {
         <WeatherForecastHour :weather="weather" />
       </div>
     </div>
-
-    <!-- forecast -->
-<!--    <div v-for="(weather, id) in place" :key="id">-->
-<!--      <WeatherForecastHour :weather="weather" />-->
-<!--    </div>-->
 
     <!-- info -->
     <Transition name="fade">
@@ -98,25 +96,3 @@ const removePlace = (placeName) => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.bg-day {
-  background-color: #8ec5fc;
-  background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
-}
-
-.bg-night {
-  background-color: #07223d;
-  background-image: linear-gradient(62deg, #0a2a4a 0%, #270845 100%);
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

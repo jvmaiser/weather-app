@@ -4,6 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Request responsible for handling weather requests.
+ * @package App\Http\Requests\GetWeatherRequest
+ * @author Jaybee Satulan <jaybeesatulan@gmail.com>
+ */
 class GetWeatherRequest extends FormRequest
 {
     /**
@@ -16,7 +21,6 @@ class GetWeatherRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
@@ -28,6 +32,10 @@ class GetWeatherRequest extends FormRequest
         ];
     }
 
+    /**
+     * Set the error message
+     * @return string[]
+     */
     public function messages(): array
     {
         return [

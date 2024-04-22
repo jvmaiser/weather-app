@@ -3,19 +3,36 @@
 namespace App\Services;
 
 use App\Services\API\OpenWeatherMapAPIClient;
-use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
+/**
+ * Service responsible for handling weather-related operations.
+ * @package App\Services\WeatherService
+ * @author Jaybee Satulan <jaybeesatulan@gmail.com>
+ */
 class WeatherService
 {
+    /**
+     * OpenWeatherMap API client instance.
+     * @var OpenWeatherMapAPIClient
+     */
     protected $openWeatherMapAPIClient;
 
+    /**
+     * constructor.
+     * @param OpenWeatherMapAPIClient $openWeatherMapAPIClient
+     */
     public function __construct(OpenWeatherMapAPIClient $openWeatherMapAPIClient)
     {
         $this->openWeatherMapAPIClient = $openWeatherMapAPIClient;
     }
 
-    public function getWeather(array $city)
+    /**
+     * Get weather forecast for the specified city.
+     * @param array $city
+     * @return array
+     */
+    public function getWeather(array $city): array
     {
         $response = $this->openWeatherMapAPIClient->get('/forecast', $city);
         $weatherList = Arr::get($response, 'list', []);
@@ -23,10 +40,15 @@ class WeatherService
         return $this->getClosestTimes($weatherList);
     }
 
-    private function getClosestTimes($forecast)
+    /**
+     * Get the closest future weather forecast times from the current time.
+     * @param array $forecast
+     * @return array
+     */
+    private function getClosestTimes(array $forecast): array
     {
         date_default_timezone_set('Asia/Tokyo');
-        $currentDateTime = date("Y-m-d H:i:s");
+        $currentDateTime = date('Y-m-d H:i:s');
 
         $filteredLists = [];
         $count = 0;

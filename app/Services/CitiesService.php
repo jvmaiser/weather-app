@@ -5,15 +5,34 @@ namespace App\Services;
 use App\Services\API\FoursquareAPiClient;
 use Illuminate\Support\Arr;
 
+/**
+ * Service responsible for handling city-related operations.
+ * @package App\Services\CitiesService
+ * @author Jaybee Satulan <jaybeesatulan@gmail.com>
+ */
 class CitiesService
 {
+    /**
+     * Foursquare API client instance.
+     * @var FoursquareAPiClient
+     */
     protected $foursquareClient;
 
+    /**
+     * constructor.
+     * @param FoursquareAPiClient $foursquareClient
+     */
     public function __construct(FoursquareAPiClient $foursquareClient)
     {
         $this->foursquareClient = $foursquareClient;
     }
 
+    /**
+     * Get cities based on the provided parameters.
+     * @param array $param
+     * @return array
+     * @throws \Illuminate\Http\Client\ConnectionException
+     */
     public function getCities(array $param): array
     {
         $response = $this->foursquareClient->get('/autocomplete', $param);

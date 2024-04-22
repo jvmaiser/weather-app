@@ -5,7 +5,7 @@ use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\WeatherController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::group(['prefix' => 'api'], function() {

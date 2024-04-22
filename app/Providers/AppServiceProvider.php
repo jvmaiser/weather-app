@@ -6,6 +6,11 @@ use App\Services\API\FoursquareAPiClient;
 use App\Services\API\OpenWeatherMapAPIClient;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Service provider for registering API clients.
+ * @package App\Providers\AppServiceProvider
+ * @author Jaybee Satulan <jaybeesatulan@gmail.com>
+ */
 class AppServiceProvider extends ServiceProvider
 {
     /**
